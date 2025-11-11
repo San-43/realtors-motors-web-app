@@ -7,6 +7,10 @@ export default function ForgotPassword() {
   function onChange(e) {
     setEmail(e.target.value);
   }
+  async function onSubmit(e) {
+    e.preventDefault();
+    
+  }
   return (
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Forgot Password</h1>
@@ -19,7 +23,7 @@ export default function ForgotPassword() {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form action="">
+          <form action="" onSubmit={onSubmit}>
             <div>
               <input
                 type="email"
