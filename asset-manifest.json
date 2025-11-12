@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/realtors-motors-web-app/static/css/main.da174895.css",
-    "main.js": "/realtors-motors-web-app/static/js/main.0ea67062.js",
+    "main.js": "/realtors-motors-web-app/static/js/main.c4b0f423.js",
     "static/js/453.9fab1c93.chunk.js": "/realtors-motors-web-app/static/js/453.9fab1c93.chunk.js",
     "static/media/logo.jpg": "/realtors-motors-web-app/static/media/logo.2fea41dcf24c9815fe4e.jpg",
     "index.html": "/realtors-motors-web-app/index.html",
     "main.da174895.css.map": "/realtors-motors-web-app/static/css/main.da174895.css.map",
-    "main.0ea67062.js.map": "/realtors-motors-web-app/static/js/main.0ea67062.js.map",
+    "main.c4b0f423.js.map": "/realtors-motors-web-app/static/js/main.c4b0f423.js.map",
     "453.9fab1c93.chunk.js.map": "/realtors-motors-web-app/static/js/453.9fab1c93.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.da174895.css",
-    "static/js/main.0ea67062.js"
+    "static/js/main.c4b0f423.js"
   ]
 }
