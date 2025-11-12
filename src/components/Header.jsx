@@ -1,19 +1,22 @@
-import React, { useMemo } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useAuthStatus } from "../hooks/useAuthStatus";
-import logo from "../assets/logo.jpg"; // Import correcto del logo
-
-
-// Header dinamico que refleja el estado de autenticación, mantiene NavLink y estilos actuales
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import logo from "../assets/logo.jpg";
 export default function Header() {
+  const [pageState, setPageState] = useState("Sign in");
   const navigate = useNavigate();
-  const location = useLocation();
-  const { loggedIn, checkingStatus } = useAuthStatus();
-
+  const auth = getAuth();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setPageState("Profile");
+      } else {
+        setPageState("Sign in");
+      }
+    });
+  }, [auth]);
   const baseClasses =
     "inline-block cursor-pointer py-3 text-sm font-semibold border-b-[3px] transition-colors duration-150";
-
-  // Reutilizamos la misma función de clases para todos los NavLinks
   const getClasses = ({ isActive }) =>
     [
       baseClasses,
@@ -21,23 +24,7 @@ export default function Header() {
         ? "text-black border-b-red-500"
         : "text-gray-400 border-b-transparent hover:text-gray-600",
     ].join(" ");
-
-  // Etiqueta y ruta dinámica del último item del menú
-  const authLink = useMemo(
-    () => ({
-      label: loggedIn ? "Profile" : "Sign In",
-      to: loggedIn ? "/profile" : "/sign-in",
-    }),
-    [loggedIn]
-  );
-
-  // Mientras se verifica el estado, evitamos parpadeo mostrando etiqueta neutra
-  const authLabel = checkingStatus ? "..." : authLink.label;
-
-  // Determinar si debemos resaltar manualmente (cuando ruta actual es /profile o /sign-in)
-  const isAuthActive =
-    location.pathname === "/profile" || location.pathname === "/sign-in";
-
+  const authTo = pageState === "Profile" ? "/profile" : "/sign-in";
   return (
     <div className="bg-white border-b shadow-sm sticky top-0 z-40">
       <header className="flex justify-between items-center px-3 max-w-6xl mx-auto">
@@ -52,7 +39,7 @@ export default function Header() {
         <nav>
           <ul className="flex space-x-10">
             <li>
-              <NavLink to="/" className={getClasses} end>
+              <NavLink to="/" end className={getClasses}>
                 Home
               </NavLink>
             </li>
@@ -62,17 +49,8 @@ export default function Header() {
               </NavLink>
             </li>
             <li>
-              {/** Para mantener NavLink, usamos 'to' dinámico. Añadimos lógica para que se marque activo también cuando cambia la ruta auth. */}
-              <NavLink
-                to={authLink.to}
-                className={(navData) =>
-                  getClasses({
-                    ...navData,
-                    isActive: navData.isActive || isAuthActive,
-                  })
-                }
-              >
-                {authLabel}
+              <NavLink to={authTo} className={getClasses}>
+                {pageState}
               </NavLink>
             </li>
           </ul>
