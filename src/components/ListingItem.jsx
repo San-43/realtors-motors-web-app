@@ -6,6 +6,29 @@ import { FaTrash } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 dayjs.extend(relativeTime);
 
+const formatNumber = (value) => {
+  if (value === null || value === undefined) {
+    return "N/A";
+  }
+
+  const numericValue = Number(value);
+
+  if (Number.isNaN(numericValue)) {
+    return value;
+  }
+
+  return numericValue.toLocaleString();
+};
+
+const formatWithUnit = (value, unit) => {
+  const formatted = formatNumber(value);
+  if (formatted === "N/A") {
+    return formatted;
+  }
+
+  return `${formatted} ${unit}`;
+};
+
 export default function ListingItem({ listing, id, onEdit, onDelete }) {
   return (
     <li className="relative bg-white flex flex-col justify-between items-center shadow-md hover:shadow-xl rounded-md overflow-hidden transition-shadow duration-150 m-[10px]">
@@ -39,19 +62,59 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             {listing.type === "rent" && " / month"}
           </p>
-          <div className="flex items-center mt-[10px] space-x-3">
-            <div className="flex items-center space-x-1">
-              <p className="font-bold text-xs">
-                {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : "1 Bed"}
-              </p>
+          <div className="mt-[10px] grid w-full grid-cols-2 gap-3 text-xs text-gray-700 sm:grid-cols-3">
+            <div className="flex flex-col">
+              <span className="text-[11px] uppercase tracking-wide text-gray-500">
+                Marca
+              </span>
+              <span className="text-sm font-semibold text-gray-800">
+                {listing.brand || "N/A"}
+              </span>
             </div>
-            <div className="flex items-center space-x-1">
-              <p className="font-bold text-xs">
-                {listing.bathrooms > 1
-                  ? `${listing.bathrooms} Baths`
-                  : "1 Bath"}
-              </p>
+            <div className="flex flex-col">
+              <span className="text-[11px] uppercase tracking-wide text-gray-500">
+                Modelo
+              </span>
+              <span className="text-sm font-semibold text-gray-800">
+                {listing.model || "N/A"}
+              </span>
             </div>
+            <div className="flex flex-col">
+              <span className="text-[11px] uppercase tracking-wide text-gray-500">
+                Año
+              </span>
+              <span className="text-sm font-semibold text-gray-800">
+                {listing.year || "N/A"}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[11px] uppercase tracking-wide text-gray-500">
+                Kilometraje
+              </span>
+              <span className="text-sm font-semibold text-gray-800">
+                {formatWithUnit(listing.mileage, "km")}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[11px] uppercase tracking-wide text-gray-500">
+                Cilindrada
+              </span>
+              <span className="text-sm font-semibold text-gray-800">
+                {formatWithUnit(listing.engineCapacity, "cc")}
+              </span>
+            </div>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {listing.hasWarranty && (
+              <span className="rounded-full bg-green-100 px-3 py-1 text-[11px] font-semibold uppercase text-green-700">
+                Garantía incluida
+              </span>
+            )}
+            {listing.includesAccessories && (
+              <span className="rounded-full bg-blue-100 px-3 py-1 text-[11px] font-semibold uppercase text-blue-700">
+                Accesorios incluidos
+              </span>
+            )}
           </div>
         </div>
       </Link>
