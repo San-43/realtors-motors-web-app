@@ -16,15 +16,19 @@ import { useNavigate } from "react-router-dom";
 export default function CreateListing() {
   const navigate = useNavigate();
   const auth = getAuth();
+  const currentYear = new Date().getFullYear();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: "rent",
     name: "",
-    bedrooms: 1,
-    bathrooms: 1,
-    parking: false,
-    furnished: false,
+    brand: "",
+    model: "",
+    year: currentYear,
+    mileage: 0,
+    engineCapacity: 0,
+    hasWarranty: false,
+    includesAccessories: false,
     address: "",
     description: "",
     offer: false,
@@ -37,11 +41,14 @@ export default function CreateListing() {
   const {
     type,
     name,
-    bedrooms,
-    bathrooms,
-    parking,
+    brand,
+    model,
+    year,
+    mileage,
+    engineCapacity,
+    hasWarranty,
+    includesAccessories,
     address,
-    furnished,
     description,
     offer,
     regularPrice,
@@ -168,7 +175,7 @@ export default function CreateListing() {
     delete formDataCopy.longitude;
     const docRef = await addDoc(collection(db, "listings"), formDataCopy);
     setLoading(false);
-    toast.success("Listing created");
+    toast.success("Motorcycle listing created");
     navigate(`/category/${formDataCopy.type}/${docRef.id}`);
   }
 
@@ -177,7 +184,9 @@ export default function CreateListing() {
   }
   return (
     <main className="max-w-md px-2 mx-auto">
-      <h1 className="text-3xl text-center mt-6 font-bold">Create a Listing</h1>
+      <h1 className="text-3xl text-center mt-6 font-bold">
+        Create a Motorcycle Listing
+      </h1>
       <form onSubmit={onSubmit}>
         <p className="text-lg mt-6 font-semibold">Sell / Rent</p>
         <div className="flex">
@@ -192,7 +201,7 @@ export default function CreateListing() {
                 : "bg-slate-600 text-white"
             }`}
           >
-            sell
+            Sell
           </button>
           <button
             type="button"
@@ -205,106 +214,149 @@ export default function CreateListing() {
                 : "bg-slate-600 text-white"
             }`}
           >
-            rent
+            Rent
           </button>
         </div>
-        <p className="text-lg mt-6 font-semibold">Name</p>
+        <p className="text-lg mt-6 font-semibold">Listing title</p>
         <input
           type="text"
           id="name"
           value={name}
           onChange={onChange}
-          placeholder="Name"
+          placeholder="e.g. 2022 Yamaha MT-07"
           maxLength="32"
           minLength="10"
           required
           className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 mb-6"
         />
         <div className="flex space-x-6 mb-6">
-          <div>
-            <p className="text-lg font-semibold">K</p>
+          <div className="flex-1">
+            <p className="text-lg font-semibold">Brand</p>
+            <input
+              type="text"
+              id="brand"
+              value={brand}
+              onChange={onChange}
+              placeholder="e.g. Honda"
+              maxLength="32"
+              required
+              className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600"
+            />
+          </div>
+          <div className="flex-1">
+            <p className="text-lg font-semibold">Model</p>
+            <input
+              type="text"
+              id="model"
+              value={model}
+              onChange={onChange}
+              placeholder="e.g. CB500X"
+              maxLength="32"
+              required
+              className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600"
+            />
+          </div>
+        </div>
+        <p className="text-lg font-semibold">Year</p>
+        <input
+          type="number"
+          id="year"
+          value={year}
+          onChange={onChange}
+          min="1950"
+          max={currentYear + 1}
+          required
+          className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 mb-6"
+        />
+        <div className="flex space-x-6 mb-6">
+          <div className="flex-1">
+            <p className="text-lg font-semibold">Engine capacity (cc)</p>
             <input
               type="number"
-              id="bedrooms"
-              value={bedrooms}
+              id="engineCapacity"
+              value={engineCapacity}
               onChange={onChange}
-              min="1"
-              max="50"
+              min="50"
+              max="2500"
               required
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 text-center"
             />
           </div>
-          <div>
-            <p className="text-lg font-semibold">Baths</p>
+          <div className="flex-1">
+            <p className="text-lg font-semibold">Mileage (km)</p>
             <input
               type="number"
-              id="bathrooms"
-              value={bathrooms}
+              id="mileage"
+              value={mileage}
               onChange={onChange}
-              min="1"
-              max="50"
+              min="0"
+              max="500000"
               required
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 text-center"
             />
           </div>
         </div>
-        <p className="text-lg mt-6 font-semibold">Parking spot</p>
+        <p className="text-lg mt-6 font-semibold">Warranty available</p>
         <div className="flex">
           <button
             type="button"
-            id="parking"
+            id="hasWarranty"
             value={true}
             onClick={onChange}
             className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
-              !parking ? "bg-white text-black" : "bg-slate-600 text-white"
+              !hasWarranty ? "bg-white text-black" : "bg-slate-600 text-white"
             }`}
           >
             Yes
           </button>
           <button
             type="button"
-            id="parking"
+            id="hasWarranty"
             value={false}
             onClick={onChange}
             className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
-              parking ? "bg-white text-black" : "bg-slate-600 text-white"
+              hasWarranty ? "bg-white text-black" : "bg-slate-600 text-white"
             }`}
           >
-            no
+            No
           </button>
         </div>
-        <p className="text-lg mt-6 font-semibold">Furnished</p>
+        <p className="text-lg mt-6 font-semibold">Includes accessories</p>
         <div className="flex">
           <button
             type="button"
-            id="furnished"
+            id="includesAccessories"
             value={true}
             onClick={onChange}
             className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
-              !furnished ? "bg-white text-black" : "bg-slate-600 text-white"
+              !includesAccessories
+                ? "bg-white text-black"
+                : "bg-slate-600 text-white"
             }`}
           >
-            yes
+            Yes
           </button>
           <button
             type="button"
-            id="furnished"
+            id="includesAccessories"
             value={false}
             onClick={onChange}
             className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
-              furnished ? "bg-white text-black" : "bg-slate-600 text-white"
+              includesAccessories
+                ? "bg-white text-black"
+                : "bg-slate-600 text-white"
             }`}
           >
-            no
+            No
           </button>
         </div>
-        <p className="text-lg mt-6 font-semibold">Address</p>
+        <p className="text-lg mt-6 font-semibold">Pickup address</p>
         <textarea
           type="text"
           id="address"
           value={address}
           onChange={onChange}
-          placeholder="Address"
+          placeholder="Where can interested riders find the motorcycle?"
           required
           className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 mb-6"
         />
@@ -344,11 +396,11 @@ export default function CreateListing() {
           id="description"
           value={description}
           onChange={onChange}
-          placeholder="Description"
+          placeholder="Highlight the motorcycle's condition, upgrades, and other key details"
           required
           className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 mb-6"
         />
-        <p className="text-lg font-semibold">Offer</p>
+        <p className="text-lg font-semibold">Special offer</p>
         <div className="flex mb-6">
           <button
             type="button"
@@ -357,9 +409,9 @@ export default function CreateListing() {
             onClick={onChange}
             className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
               !offer ? "bg-white text-black" : "bg-slate-600 text-white"
-            }`}
+              }`}
           >
-            yes
+            Yes
           </button>
           <button
             type="button"
@@ -370,7 +422,7 @@ export default function CreateListing() {
               offer ? "bg-white text-black" : "bg-slate-600 text-white"
             }`}
           >
-            no
+            No
           </button>
         </div>
         <div className="flex items-center mb-6">
@@ -389,7 +441,7 @@ export default function CreateListing() {
               />
               {type === "rent" && (
                 <div className="">
-                  <p className="text-md w-full whitespace-nowrap">$ / Month</p>
+                  <p className="text-md w-full whitespace-nowrap">$ / Day</p>
                 </div>
               )}
             </div>
@@ -413,7 +465,7 @@ export default function CreateListing() {
                 {type === "rent" && (
                   <div className="">
                     <p className="text-md w-full whitespace-nowrap">
-                      $ / Month
+                      $ / Day
                     </p>
                   </div>
                 )}
@@ -424,7 +476,7 @@ export default function CreateListing() {
         <div className="mb-6">
           <p className="text-lg font-semibold">Images</p>
           <p className="text-gray-600">
-            The first image will be the cover (max 6)
+            The first image will be the cover for your motorcycle listing (max 6)
           </p>
           <input
             type="file"
@@ -440,7 +492,7 @@ export default function CreateListing() {
           type="submit"
           className="mb-6 w-full px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
         >
-          Create Listing
+          Create Motorcycle Listing
         </button>
       </form>
     </main>
