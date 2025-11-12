@@ -22,7 +22,10 @@
     "swiper": "^12.0.3",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://San-43.github.io/realtors-motors-web-app",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -48,6 +51,7 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
+    "gh-pages": "^6.3.0",
     "tailwindcss": "^3.4.18"
   }
 }

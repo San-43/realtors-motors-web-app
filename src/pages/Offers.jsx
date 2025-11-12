@@ -42,6 +42,7 @@ export default function Offers() {
         setLoading(false);
       } catch (error) {
         toast.error("Could not fetch listing");
+        console.log(error);
       }
     }
 
