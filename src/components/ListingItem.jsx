@@ -65,7 +65,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
           <div className="mt-[10px] grid w-full grid-cols-2 gap-3 text-xs text-gray-700 sm:grid-cols-3">
             <div className="flex flex-col">
               <span className="text-[11px] uppercase tracking-wide text-gray-500">
-                Marca
+                Brand
               </span>
               <span className="text-sm font-semibold text-gray-800">
                 {listing.brand || "N/A"}
@@ -73,7 +73,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             </div>
             <div className="flex flex-col">
               <span className="text-[11px] uppercase tracking-wide text-gray-500">
-                Modelo
+                Model
               </span>
               <span className="text-sm font-semibold text-gray-800">
                 {listing.model || "N/A"}
@@ -81,7 +81,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             </div>
             <div className="flex flex-col">
               <span className="text-[11px] uppercase tracking-wide text-gray-500">
-                Año
+                Year
               </span>
               <span className="text-sm font-semibold text-gray-800">
                 {listing.year || "N/A"}
@@ -89,7 +89,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             </div>
             <div className="flex flex-col">
               <span className="text-[9px] uppercase tracking-wide text-gray-500">
-                Kilometraje
+                Mileage
               </span>
               <span className="text-sm font-semibold text-gray-800">
                 {formatWithUnit(listing.mileage, "km")}
@@ -97,7 +97,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             </div>
             <div className="flex flex-col">
               <span className="text-[9px] uppercase tracking-wide text-gray-500">
-                Cilindrada
+                Displacement
               </span>
               <span className="text-sm font-semibold text-gray-800">
                 {formatWithUnit(listing.engineCapacity, "cc")}
@@ -107,12 +107,12 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
           <div className="mt-3 flex flex-wrap gap-2">
             {listing.hasWarranty && (
               <span className="rounded-full bg-green-100 px-3 py-1 text-[11px] font-semibold uppercase text-green-700">
-                Garantía incluida
+                Warranty included
               </span>
             )}
             {listing.includesAccessories && (
               <span className="rounded-full bg-blue-100 px-3 py-1 text-[11px] font-semibold uppercase text-blue-700">
-                Accesorios incluidos
+                Accessories included
               </span>
             )}
           </div>
