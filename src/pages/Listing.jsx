@@ -99,7 +99,7 @@ export default function Listing() {
               : listing.regularPrice
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {listing.type === "rent" ? " / month" : ""}
+            {listing.type === "rent" ? " / day" : ""}
           </p>
           {motorcycleDetails && (
             <p className="text-sm text-slate-600 mb-4">{motorcycleDetails}</p>
