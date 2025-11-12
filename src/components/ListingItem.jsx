@@ -60,7 +60,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
               : listing.regularPrice
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {listing.type === "rent" && " / month"}
+            {listing.type === "rent" && " / day"}
           </p>
           <div className="mt-[10px] grid w-full grid-cols-2 gap-3 text-xs text-gray-700 sm:grid-cols-3">
             <div className="flex flex-col">
@@ -88,7 +88,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-[11px] uppercase tracking-wide text-gray-500">
+              <span className="text-[9px] uppercase tracking-wide text-gray-500">
                 Kilometraje
               </span>
               <span className="text-sm font-semibold text-gray-800">
@@ -96,7 +96,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-[11px] uppercase tracking-wide text-gray-500">
+              <span className="text-[9px] uppercase tracking-wide text-gray-500">
                 Cilindrada
               </span>
               <span className="text-sm font-semibold text-gray-800">
