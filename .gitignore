@@ -23,3 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 D:\Projects\final\src\firebase.js
 src/firebase.js
+env.local
