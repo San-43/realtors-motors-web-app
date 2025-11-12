@@ -144,7 +144,7 @@ export default function Profile() {
               to="/create-listing"
               className="flex justify-center items-center"
             >
-              <GiFullMotorcycleHelmet className="mr-2 text-3xl bg-red-200 rounded-full p-1 border-2" />
+              <GiFullMotorcycleHelmet className="mr-2 text-3xl bg-red-600 rounded-full p-1 border-2" />
               Sell or rent your motorcycle
             </Link>
           </button>
