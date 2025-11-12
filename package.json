@@ -22,7 +22,7 @@
     "swiper": "^12.0.3",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://San-43.github.io/realtors-motors-web-app",
+  "homepage": "https://San-43.github.io",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
