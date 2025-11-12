@@ -13,10 +13,11 @@ import "swiper/css/effect-fade";
 import {
   FaShare,
   FaMapMarkerAlt,
-  FaBed,
-  FaBath,
-  FaParking,
-  FaChair,
+  FaMotorcycle,
+  FaTachometerAlt,
+  FaRoad,
+  FaShieldAlt,
+  FaToolbox,
 } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import Contact from "../components/Contact";
@@ -28,7 +29,7 @@ export default function Listing() {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkCopied] = useState(false);
-  const [contactLandlord, setContactLandlord] = useState(false);
+  const [contactSeller, setContactSeller] = useState(false);
   // Swiper v10+ usa módulos desde 'swiper/modules' y se pasan en la prop `modules`
   useEffect(() => {
     async function fetchListing() {
@@ -44,6 +45,9 @@ export default function Listing() {
   if (loading) {
     return <Spinner />;
   }
+  const motorcycleDetails = [listing.brand, listing.model, listing.year]
+    .filter((detail) => detail !== undefined && detail !== null && detail !== "")
+    .join(" · ");
   return (
     <main>
       <Swiper
@@ -86,7 +90,7 @@ export default function Listing() {
 
       <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-white lg:space-x-5">
         <div className=" w-full ">
-          <p className="text-2xl font-bold mb-3 text-blue-900">
+          <p className="text-2xl font-bold mb-1 text-blue-900">
             {listing.name} - ${" "}
             {listing.offer
               ? listing.discountedPrice
@@ -97,13 +101,16 @@ export default function Listing() {
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             {listing.type === "rent" ? " / month" : ""}
           </p>
+          {motorcycleDetails && (
+            <p className="text-sm text-slate-600 mb-4">{motorcycleDetails}</p>
+          )}
           <p className="flex items-center mt-6 mb-3 font-semibold">
             <FaMapMarkerAlt className="text-green-700 mr-1" />
             {listing.address}
           </p>
           <div className="flex justify-start items-center space-x-4 w-[75%]">
             <p className="bg-red-800 w-full max-w-[200px] rounded-md p-1 text-white text-center font-semibold shadow-md">
-              {listing.type === "rent" ? "Rent" : "Sale"}
+              {listing.type === "rent" ? "For Rent" : "For Sale"}
             </p>
             {listing.offer && (
               <p className="w-full max-w-[200px] bg-green-800 rounded-md p-1 text-white text-center font-semibold shadow-md">
@@ -112,38 +119,48 @@ export default function Listing() {
             )}
           </div>
           <p className="mt-3 mb-3">
-            <span className="font-semibold">Description - </span>
+            <span className="font-semibold">Motorcycle Overview - </span>
             {listing.description}
           </p>
-          <ul className="flex items-center space-x-2 sm:space-x-10 text-sm font-semibold mb-6">
+          <ul className="flex flex-wrap items-center gap-4 sm:gap-8 text-sm font-semibold mb-6">
             <li className="flex items-center whitespace-nowrap">
-              <FaBed className="text-lg mr-1" />
-              {+listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : "1 Bed"}
+              <FaMotorcycle className="text-lg mr-2" />
+              {listing.brand && listing.model
+                ? `${listing.brand} ${listing.model}`
+                : "Motorcycle details"}
             </li>
             <li className="flex items-center whitespace-nowrap">
-              <FaBath className="text-lg mr-1" />
-              {+listing.bathrooms > 1 ? `${listing.bathrooms} Baths` : "1 Bath"}
+              <FaTachometerAlt className="text-lg mr-2" />
+              {listing.engineCapacity
+                ? `${listing.engineCapacity} cc engine`
+                : "Engine info unavailable"}
             </li>
             <li className="flex items-center whitespace-nowrap">
-              <FaParking className="text-lg mr-1" />
-              {listing.parking ? "Parking spot" : "No parking"}
+              <FaRoad className="text-lg mr-2" />
+              {listing.mileage ? `${listing.mileage} km mileage` : "Mileage unavailable"}
             </li>
             <li className="flex items-center whitespace-nowrap">
-              <FaChair className="text-lg mr-1" />
-              {listing.furnished ? "Furnished" : "Not furnished"}
+              <FaShieldAlt className="text-lg mr-2" />
+              {listing.hasWarranty ? "Warranty included" : "No warranty"}
+            </li>
+            <li className="flex items-center whitespace-nowrap">
+              <FaToolbox className="text-lg mr-2" />
+              {listing.includesAccessories
+                ? "Accessories included"
+                : "No extra accessories"}
             </li>
           </ul>
-          {listing.userRef !== auth.currentUser?.uid && !contactLandlord && (
+          {listing.userRef !== auth.currentUser?.uid && !contactSeller && (
             <div className="mt-6">
               <button
-                onClick={() => setContactLandlord(true)}
+                onClick={() => setContactSeller(true)}
                 className="px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg w-full text-center transition duration-150 ease-in-out "
               >
-                Contact Landlord
+                Contact Seller
               </button>
             </div>
           )}
-          {contactLandlord && (
+          {contactSeller && (
             <Contact userRef={listing.userRef} listing={listing} />
           )}
         </div>

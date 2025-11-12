@@ -5,29 +5,29 @@ import { toast } from "react-toastify";
 import { db } from "../firebase";
 
 export default function Contact({ userRef, listing }) {
-  const [landlord, setLandlord] = useState(null);
+  const [seller, setSeller] = useState(null);
   const [message, setMessage] = useState("");
   useEffect(() => {
-    async function getLandlord() {
+    async function getSeller() {
       const docRef = doc(db, "users", userRef);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setLandlord(docSnap.data());
+        setSeller(docSnap.data());
       } else {
-        toast.error("Could not get landlord data");
+        toast.error("Could not get seller data");
       }
     }
-    getLandlord();
+    getSeller();
   }, [userRef]);
   function onChange(e) {
     setMessage(e.target.value);
   }
   return (
     <>
-      {landlord !== null && (
+      {seller !== null && (
         <div className="flex flex-col w-full">
           <p>
-            Contact {landlord.name} for the {listing.name.toLowerCase()}
+            Contact {seller.name} about the {listing.name.toLowerCase()}
           </p>
           <div className="mt-3 mb-6">
             <textarea
@@ -40,7 +40,7 @@ export default function Contact({ userRef, listing }) {
             ></textarea>
           </div>
           <a
-            href={`mailto:${landlord.email}?Subject=${listing.name}&body=${message}`}
+            href={`mailto:${seller.email}?Subject=${listing.name}&body=${message}`}
           >
             <button className="px-7 py-3 bg-blue-600 text-white rounded text-sm uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full text-center mb-6" type="button">
               Send Message
